@@ -1,0 +1,8 @@
+package: server
+generate:
+  echo-server: true
+  models: true
+  embedded-spec: true
+output: pkg/server/server.gen.go
+output-options:
+  skip-prune: true

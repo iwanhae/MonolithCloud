@@ -1,0 +1,111 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: MonolithCloud
+  license:
+    name: Apache 2.0
+paths:
+  /v0/vm:
+    get:
+      summary: List all VMs
+      operationId: listVMs
+      tags:
+        - v0
+      responses:
+        '200':
+          description: List defined VMs
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/VMInfos"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a VM
+      operationId: createVM
+      tags:
+        - v0
+      responses:
+        '201':
+          description: Make a reservation to create VM
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v0/vm/{vmId}:
+    get:
+      summary: Show VM details
+      operationId: getVM
+      parameters:
+        - name: vmId
+          in: path
+          required: true
+          description: The id of the VM to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Spec and Status of the VM
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VMInfo"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    VMSpec:
+      type: object
+      required:
+        - id
+        - name
+        - ip
+        - cpu
+        - ram
+        - disk
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        ip:
+          type: string
+        cpu:
+          type: integer
+        ram:
+          type: integer
+        disk:
+          type: integer
+    VMInfo:
+      type: object
+      required:
+        - spec
+        - status
+      properties:
+        spec:
+          $ref: "#/components/schemas/VMSpec"
+    VMInfos:
+      type: array
+      maxItems: 100
+      items:
+        $ref: "#/components/schemas/VMInfo"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
