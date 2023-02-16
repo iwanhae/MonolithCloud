@@ -1,7 +1,7 @@
 #!/bin/bash
 docker build -t test .
 rm rootfs.ext4
-truncate -s 5G rootfs.ext4
+truncate -s 1G rootfs.ext4
 mkfs.ext4 -E nodiscard rootfs.ext4
 mkdir -p rootfs
 mount rootfs.ext4 rootfs
